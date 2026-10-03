@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ТРАССА &mdash; автомобили с пробегом в Москве</title>
+<meta name="description" content="Автосалон ТРАССА: проверенные автомобили с пробегом, юридическая чистота, кредит и трейд-ин. Подберите машину по фильтрам и рассчитайте платеж онлайн.">
+<meta name="theme-color" content="#0D0E11">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<header class="nav" id="nav">
+  <a class="logo" href="#top">ТРАССА<span>авто с пробегом</span></a>
+  <nav class="menu">
+    <a href="#catalog">Каталог</a>
+    <a href="#credit">Кредит</a>
+    <a href="#tradein">Трейд-ин</a>
+    <a href="#check">Проверка</a>
+  </nav>
+  <a class="nav-phone" href="tel:+74950000000">+7 495 000-00-00</a>
+  <a class="btn btn-red btn-sm" href="#form">Тест-драйв</a>
+</header>
+
+<!-- ПЕРВЫЙ ЭКРАН -->
+<section class="hero" id="top">
+  <img class="hero-bg" src="assets/hero.jpg" alt="Автосалон с машинами под прожекторами" fetchpriority="high">
+  <div class="wrap hero-in">
+    <span class="tag reveal">Москва, МКАД 41 км · ежедневно 9:00–21:00</span>
+    <h1 class="reveal">Автомобили с пробегом<br><em>без скрытых сюрпризов</em></h1>
+    <p class="reveal">Каждую машину проверяем по 120 пунктам и по базам ГИБДД и залогов.
+      Отчет о проверке — бесплатно, до покупки.</p>
+    <div class="hero-act reveal">
+      <a class="btn btn-red" href="#catalog">Смотреть машины</a>
+      <a class="btn btn-ghost" href="#tradein">Оценить мой автомобиль</a>
+    </div>
+    <ul class="hero-facts reveal">
+      <li><b id="carsCount">12</b><span>машин в наличии</span></li>
+      <li><b>120</b><span>пунктов проверки</span></li>
+      <li><b>15,9%</b><span>кредит от</span></li>
+    </ul>
+  </div>
+</section>
+
+<!-- КАТАЛОГ -->
+<section class="section" id="catalog">
+  <div class="wrap">
+    <div class="head-row">
+      <div class="head">
+        <span class="kicker reveal">Каталог</span>
+        <h2 class="reveal">В наличии сейчас</h2>
+      </div>
+      <label class="sort reveal"><span>Сортировка</span>
+        <select id="sort">
+          <option value="price-asc">Сначала дешевле</option>
+          <option value="price-desc">Сначала дороже</option>
+          <option value="year-desc">Сначала новее</option>
+          <option value="km-asc">Меньше пробег</option>
+        </select></label>
+    </div>
+
+    <form class="filters reveal" id="filters">
+      <label class="f"><span>Марка</span><select id="fBrand"><option value="">Любая</option></select></label>
+      <label class="f"><span>Цена до</span><select id="fPrice">
+        <option value="">Любая</option><option value="1500000">1,5 млн ₽</option>
+        <option value="2000000">2 млн ₽</option><option value="2500000">2,5 млн ₽</option>
+        <option value="3000000">3 млн ₽</option></select></label>
+      <label class="f"><span>Год от</span><select id="fYear">
+        <option value="">Любой</option><option>2018</option><option>2019</option><option>2020</option>
+        <option>2021</option><option>2022</option></select></label>
+      <label class="f"><span>Коробка</span><select id="fGear">
+        <option value="">Любая</option><option value="AT">Автомат</option><option value="MT">Механика</option></select></label>
+      <div class="f f-body"><span>Кузов</span>
+        <div class="bodies" id="fBody">
+          <button type="button" class="on" data-body="">Все</button>
+          <button type="button" data-body="Седан">Седан</button>
+          <button type="button" data-body="Кроссовер">Кроссовер</button>
+          <button type="button" data-body="Лифтбек">Лифтбек</button>
+        </div></div>
+    </form>
+    <p class="found" id="found" aria-live="polite"></p>
+
+    <div class="cars" id="cars"></div>
+    <div class="empty" id="empty" hidden>
+      <p>Под такие условия машин нет — но мы привезем под заказ за 2–4 недели.</p>
+      <button class="btn btn-line" type="button" id="reset">Сбросить фильтры</button>
+    </div>
+  </div>
+</section>
+
+<!-- КАРТОЧКА АВТО -->
+<dialog class="modal" id="modal" aria-labelledby="mTitle">
+  <button class="m-close" type="button" id="mClose" aria-label="Закрыть">×</button>
+  <img id="mImg" src="" alt="">
+  <div class="m-body">
+    <h3 id="mTitle"></h3>
+    <p class="m-price" id="mPrice"></p>
+    <p class="m-month" id="mMonth"></p>
+    <dl class="m-specs" id="mSpecs"></dl>
+    <ul class="m-checks">
+      <li>Юридически чистая: не в залоге, без ограничений</li>
+      <li>Пробег подтвержден по сервисной истории</li>
+      <li>Отчет о проверке по 120 пунктам</li>
+    </ul>
+    <div class="m-act">
+      <a class="btn btn-red" href="#form" id="mDrive">Записаться на тест-драйв</a>
+      <a class="btn btn-line" href="#credit" id="mCredit">Рассчитать кредит</a>
+    </div>
+  </div>
+</dialog>
+
+<!-- КРЕДИТ -->
+<section class="section credit-sec" id="credit">
+  <div class="wrap credit-grid">
+    <div>
+      <span class="kicker reveal">Кредит</span>
+      <h2 class="reveal">Посчитайте платеж</h2>
+      <p class="reveal">Работаем с 9 банками и подаем заявку во все сразу — решение за 30 минут.
+        Расчет предварительный и не является офертой.</p>
+    </div>
+    <div class="credit reveal">
+      <label class="range"><span class="range-head"><b>Стоимость автомобиля</b><output id="cPriceOut"></output></span>
+        <input type="range" id="cPrice" min="500000" max="5000000" step="10000" value="2000000"></label>
+      <label class="range"><span class="range-head"><b>Первый взнос</b><output id="cDownOut"></output></span>
+        <input type="range" id="cDown" min="0" max="70" step="5" value="20"></label>
+      <div class="terms"><b>Срок</b><div class="term-btns" id="cTerms"></div></div>
+      <div class="credit-res">
+        <div><span>Платеж в месяц</span><b id="cMonth"></b></div>
+        <div><span>Сумма кредита</span><b id="cLoan"></b></div>
+        <div><span>Ставка</span><b id="cRate"></b></div>
+      </div>
+      <a class="btn btn-red btn-wide" href="#form" id="cToForm">Получить одобрение</a>
+    </div>
+  </div>
+</section>
+
+<!-- ПРОВЕРКА -->
+<section class="section" id="check">
+  <div class="wrap">
+    <div class="head">
+      <span class="kicker reveal">Проверка</span>
+      <h2 class="reveal">Что мы проверяем до того, как машина попадет в каталог</h2>
+    </div>
+    <div class="checks">
+      <div class="chk reveal"><span>01</span><h3>Юридическая чистота</h3>
+        <p>Базы ГИБДД, реестр залогов ФНП, розыск и ограничения. Машины с проблемами не берем.</p></div>
+      <div class="chk reveal"><span>02</span><h3>Кузов и ЛКП</h3>
+        <p>Толщиномер по всем деталям, геометрия проемов, следы ДТП и перекраса.</p></div>
+      <div class="chk reveal"><span>03</span><h3>Техника</h3>
+        <p>Компьютерная диагностика, двигатель, коробка, подвеска, тормоза — на подъемнике.</p></div>
+      <div class="chk reveal"><span>04</span><h3>История и пробег</h3>
+        <p>Сервисная книжка, история обслуживания у дилера, сверка пробега с отчетами.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ТРЕЙД-ИН -->
+<section class="section tradein-sec" id="tradein">
+  <div class="wrap tradein-grid">
+    <figure class="tradein-photo reveal"><img src="assets/showroom.jpg" alt="Специалист проверяет автомобиль диагностическим планшетом" loading="lazy"></figure>
+    <div>
+      <span class="kicker reveal">Трейд-ин</span>
+      <h2 class="reveal">Сдайте свою машину в зачет новой</h2>
+      <p class="reveal">Оценим за 30 минут при вас, зачтем в стоимость и оформим все в один день.
+        Можно приехать на старой — уехать на новой.</p>
+      <ul class="tradein-list reveal">
+        <li>Выкупаем и битые, и кредитные машины</li>
+        <li>Деньги на карту в день сделки, если не нужна замена</li>
+        <li>Снятие с учета и документы берем на себя</li>
+      </ul>
+      <a class="btn btn-red reveal" href="#form" id="toTradein">Записаться на оценку</a>
+    </div>
+  </div>
+</section>
+
+<!-- ОТЗЫВЫ -->
+<section class="section" id="reviews">
+  <div class="wrap">
+    <div class="head"><span class="kicker reveal">Отзывы</span>
+      <h2 class="reveal">Покупатели о нас</h2></div>
+    <div class="reviews">
+      <blockquote class="review reveal"><p>«Брали Creta. Перед покупкой показали отчет с замерами краски — одна деталь была перекрашена, сказали сразу, сделали скидку».</p>
+        <cite>Андрей · Hyundai Creta</cite></blockquote>
+      <blockquote class="review reveal"><p>«Сдал старый Logan в трейд-ин, через три часа уехал на Octavia. Кредит одобрили в первом же банке».</p>
+        <cite>Евгений · Skoda Octavia</cite></blockquote>
+      <blockquote class="review reveal"><p>«Удобно, что можно посмотреть все на сайте с фильтрами, а в салоне машина ровно такая, как на фото».</p>
+        <cite>Ирина · Kia Rio</cite></blockquote>
+    </div>
+  </div>
+</section>
+
+<!-- ВОПРОСЫ -->
+<section class="section faq-sec" id="faq">
+  <div class="wrap faq-grid">
+    <div class="head"><span class="kicker reveal">Вопросы</span><h2 class="reveal">Частые вопросы</h2></div>
+    <div class="faq">
+      <details class="reveal"><summary>Можно ли проверить машину в своем сервисе?</summary>
+        <p>Да. Согласуем время, и вы сможете отвезти машину на независимую диагностику вместе с нашим сотрудником.</p></details>
+      <details class="reveal"><summary>Есть ли гарантия?</summary>
+        <p>На двигатель и коробку — 6 месяцев или 10 000 км. Условия прописаны в договоре.</p></details>
+      <details class="reveal"><summary>Можно ли купить без первого взноса?</summary>
+        <p>Да, часть банков одобряет кредит без взноса. Платеж будет выше — посчитайте в калькуляторе, поставив 0%.</p></details>
+      <details class="reveal"><summary>Привозите ли машины под заказ?</summary>
+        <p>Да, подберем по вашим параметрам за 2–4 недели. Проверка — такая же, по 120 пунктам.</p></details>
+    </div>
+  </div>
+</section>
+
+<!-- ЗАЯВКА -->
+<section class="section form-sec" id="form">
+  <div class="wrap form-grid">
+    <div class="form-info">
+      <span class="kicker reveal">Запись</span>
+      <h2 class="reveal">Тест-драйв, оценка или кредит</h2>
+      <p class="reveal">Оставьте телефон — менеджер перезвонит за 10 минут и подберет время.</p>
+      <div class="contacts reveal">
+        <a href="tel:+74950000000">+7 495 000-00-00</a>
+        <span>МКАД 41 км, внешняя сторона · ежедневно 9:00–21:00</span>
+      </div>
+    </div>
+    <form class="lead reveal" id="leadForm" novalidate>
+      <div class="goal" id="goal">
+        <label><input type="radio" name="goal" value="drive" checked><span>Тест-драйв</span></label>
+        <label><input type="radio" name="goal" value="tradein"><span>Трейд-ин</span></label>
+        <label><input type="radio" name="goal" value="credit"><span>Кредит</span></label>
+      </div>
+      <label class="field"><span>Имя</span><input type="text" id="name" placeholder="Андрей" autocomplete="name"></label>
+      <label class="field"><span>Телефон</span><input type="tel" id="phone" placeholder="+7 900 000-00-00" autocomplete="tel"></label>
+      <label class="field"><span>Комментарий</span><textarea id="note" rows="3" placeholder="Интересует Kia Sportage 2022"></textarea></label>
+      <label class="check"><input type="checkbox" id="agree"><span>Согласен на обработку персональных данных</span></label>
+      <button class="btn btn-red btn-wide" type="submit">Отправить</button>
+      <p class="ok" id="ok" hidden></p>
+    </form>
+  </div>
+</section>
+
+<footer class="foot">
+  <div class="wrap foot-row">
+    <span>ТРАССА — автомобили с пробегом</span>
+    <span class="demo">Демонстрационный сайт. Автосалон и объявления вымышлены, расчет кредита не является офертой, фотографии сгенерированы.</span>
+    <a href="https://t.me/VladisavSSS" target="_blank" rel="noopener">Сделал сайт: @VladisavSSS</a>
+  </div>
+</footer>
+
+<a class="call-fab" href="#form">Записаться на тест-драйв</a>
+
+<script src="js/cars.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
